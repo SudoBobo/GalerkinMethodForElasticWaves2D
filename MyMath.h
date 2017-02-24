@@ -39,7 +39,7 @@ bool InvertMatrix(const matrix<T>& input, matrix<T>& inverse)
 template <class T>
 matrix <T> makeInvertible(const matrix <T> original)
 {
-	matrix <T> invertible;
+	matrix <T> invertible = original;
 	InvertMatrix(original, invertible);
 	return invertible;
 }

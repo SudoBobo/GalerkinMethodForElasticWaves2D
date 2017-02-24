@@ -58,16 +58,19 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 		// проверь эту секцию с дебагом
 		T = t.getT(j);
 		A = t.getA();
-		AbsoluteA = t.getAbsoluteA();
+		U = t.getU();
 
+		//TODO: сделать абсолют А, стар А/Б и получение J из треугольника
+		AbsoluteA = t.getAbsoluteA();
 		// hardly unfinished
+		// можно это всё в цикле сделать, чтоб наверняка
 		matrix<double> first = prod(T, A + AbsoluteA);
 		// не T, а обратная к T
 		matrix<double> invertibleT = makeInvertible(T);
 		matrix<double> second = prod (invertibleT, U);
 
 		component[j-1] = prod(first,second);
-		//component[j-1] = -1 * prod (first,second) * 0.5 * t.getFj0() * Sj;
+		component[j-1] *= -0.5 * t.getFj0() * Sj;
 	}
 
 
@@ -80,6 +83,8 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 		A = t.getA();
 		AbsoluteA = t.getAbsoluteA();
 
+		U = t.getU();
+
 		// hardly unfinished
 		matrix<double>first = prod(T, A - AbsoluteA);
 		// не T, а обратная к T
@@ -88,7 +93,7 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 		matrix<double> second = prod (invertibleT, U);
 
 		secondComponent[j-1] = prod(first,second);
-//		secondComponent[j-1] = -1 * prod (first,second) * 0.5 * t.getFj0() * Sj;
+		secondComponent[j-1] *= -0.5 * t.getFji() * Sj;
 	}
 
 	double J = t.getJ();
@@ -104,8 +109,10 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 
 	auto Mkl = t.getM();
 
-	auto thirdComponent  = prod(starA, U); //* J * t.getKxi();
-	auto fourthComponent = prod(starB, U);// * J * t.getKeta();
+	matrix<double> thirdComponent  = prod(starA, U); //* J * t.getKxi();
+	thirdComponent *= J * t.getKxi();
+	matrix<double> fourthComponent = prod(starB, U);// * J * t.getKeta();
+	fourthComponent *= J * t.getKeta();
 
 	dU += component[0] + component[1] + component[2] + secondComponent[0] + secondComponent[1] + secondComponent[2]
 		  + thirdComponent + fourthComponent;

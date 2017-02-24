@@ -16,7 +16,7 @@ public:
 	ProblemSolver(shared_ptr<SystemMaker> systemMaker,
 				  shared_ptr<SystemSolver> systemSolver);
 	void solve(double realFullTime, double timeStep,
-			   shared_ptr<TriangleMesh> initialMesh);
+			   shared_ptr<TriangleMesh> initialMesh,  std::vector <int> gridSize);
 	void solveOneStep(shared_ptr <TriangleMesh> currentState,
 					  shared_ptr <TriangleMesh> nextState);
 	void writeOneStep(shared_ptr <TriangleMesh> triangleMesh,
@@ -24,6 +24,7 @@ public:
 private:
 	shared_ptr<SystemMaker>  systemMaker;
 	shared_ptr<SystemSolver> systemSolver;
+	std::vector <int> gridSize;
 };
 
 #endif // PROBLEMSOLVER_H

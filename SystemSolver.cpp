@@ -19,8 +19,10 @@ void SystemSolver::solveOneTriangle(Triangle & origTriangle, Triangle & newTrian
 {
 	static matrix<double> U;
 	//не по ссылке ли передаётся?
-	U = origTriangle.getU();
+//	U = origTriangle.getU();
 	// Euler method
 	 // this->getTimeStep() * this->systemMaker.dU();
+	U = origTriangle.getU();
+	U += this->timeStep * this->systemMaker->dU(origTriangle);
 	newTriangle.setU(U);
 }
