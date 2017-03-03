@@ -82,21 +82,21 @@ public:
 	int getRectangleM () const;
 
 	matrix <double> getA() const;
-	matrix <double> getAbsoluteA(Bound bound) const;
-	matrix <double> getStarA() const;
+	matrix <double> getAbsoluteA(Bound bound) const; //!
+	matrix <double> getStarA() const; //!
 
 	matrix <double> getB() const;
-  	matrix <double> getStarB() const;
+  	matrix <double> getStarB() const; //!
 
 
-  	matrix<double> getR (Bound bound)const;
+  	matrix<double> getR (Bound bound)const; //!
 
 
   	Triangle * getFirstBoundaryTriangle() const;
 	Triangle * getSecondBoundaryTriangle() const;
 	Triangle * getThirdBoundaryTriangle() const;
 
-	matrix <double> getT(int j) const;
+//	matrix <double> getT(int j) const;
   	matrix<double> getT(Bound bound) const;
 
 	std::pair <double, double> getCentreCoordinates() const;
@@ -121,9 +121,32 @@ public:
 
 	void writeBoundaries() const;
 
+
+  void setMu(double mu);
+  void setLambda(double lambda);
+  void setRho(double rho);
+  double getMu() const;
+  double getLambda() const;
+  double getRho() const;
+
+  double getCS() const;
+  double getCP() const;
+  double getS(int number) const;
+
+  double getX(int i) const;
+  double getY(int i) const;
+
+  matrix<double> getSpeedMatrix () const;
+
 private:
 
 	// свойство полинома - общее, как и размер решения
+
+
+    double mu;
+    double lambda;
+    double rho;
+
 	int polynomialOrder;
 	int uSize;
 

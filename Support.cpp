@@ -51,6 +51,10 @@ std::vector <Triangle> createRegularTriangelMesh(double xSize, double ySize,
 
 	for (int m = 0; m < mesh.size(); m++)
 	{
+		mesh[m].setMu(mu);
+		mesh[m].setRho(rho);
+		mesh[m].setLambda(lambda);
+
 		mesh[m].setNumber(m);
 		mesh[m].setNumberInRectangle(numberInRectangle);
 		numberInRectangle++;

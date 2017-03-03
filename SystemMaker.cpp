@@ -56,12 +56,13 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 	for (int j = 1; j <= 3; j++)
 	{
 		// проверь эту секцию с дебагом
-		T = t.getT(j);
+		Bound bound = t.getBound(j);
+		T = t.getT(bound);
 		A = t.getA();
 		U = t.getU();
 
 		//TODO: сделать абсолют А, стар А/Б и получение J из треугольника
-		AbsoluteA = t.getAbsoluteA();
+		AbsoluteA = t.getAbsoluteA(bound);
 		// hardly unfinished
 		// можно это всё в цикле сделать, чтоб наверняка
 		matrix<double> first = prod(T, A + AbsoluteA);
