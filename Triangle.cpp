@@ -482,3 +482,13 @@ double Triangle::getS(int number) const
 
   return s[numberInArray];
 }
+
+
+double Triangle::getSModule(Bound bound) const {
+  double x1 = bound.x1;
+  double x2 = bound.x2;
+  double y1 = bound.y1;
+  double y2 = bound.y2;
+  double result = sqrt(pow((x2 - x1),2) + pow((y2 - y1), 2));
+  return result;
+}

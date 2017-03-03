@@ -17,36 +17,13 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 	assert(triangle.getPolynomialOrder() == 0);
 
 	Triangle & t = triangle;
-	static matrix <double> T(5,5);
-	static matrix <double> A(5,5);
-	static matrix <double> AbsoluteA(5,5);
-	static matrix <double> U(5,1);
-	static matrix <double> dU(5,1);
 
-	// не уверен, что это так
-	double Sj = 1.0;
+	matrix <double> T(5,5);
+	matrix <double> A(5,5);
+	matrix <double> AbsoluteA(5,5);
+	matrix <double> U(5,1);
+	matrix <double> dU(5,1);
 
-	dU *= 0;
-	T  *= 0;
-
-{
-//	int pMax = t.getU().size1();
-//	int lMax = t.getPolynomialOrder();
-//	int jMax = 3;
-
-//	for (int p = 1; p <= pMax; p++)
-//	{
-//		for (int l = 0; l <= lMax; l++)
-//		{
-//			for (int j = 1; j <= jMax; j++)
-//			{
-//				dU += 1;
-//			}
-//			// + два последних слагаемых
-//			// не забудь знаки поменять
-//		}
-//	}
-}
 
 
 	// make first big component in formula 21
@@ -61,17 +38,14 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 		A = t.getA();
 		U = t.getU();
 
-		//TODO: сделать абсолют А, стар А/Б и получение J из треугольника
 		AbsoluteA = t.getAbsoluteA(bound);
-		// hardly unfinished
-		// можно это всё в цикле сделать, чтоб наверняка
 		matrix<double> first = prod(T, A + AbsoluteA);
-		// не T, а обратная к T
 		matrix<double> invertibleT = makeInvertible(T);
 		matrix<double> second = prod (invertibleT, U);
 
+		double SModule = t.getSModule(bound);
 		component[j-1] = prod(first,second);
-		component[j-1] *= -0.5 * t.getFj0() * Sj;
+		component[j-1] *= -0.5 * t.getFj0() * SModule;
 	}
 
 
@@ -93,8 +67,10 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 		matrix<double>invertibleT = makeInvertible(T);
 		matrix<double> second = prod (invertibleT, mU);
 
+		double SModule = t.getSModule(currentBound);
+
 		secondComponent[j-1] = prod(first,second);
-		secondComponent[j-1] *= -0.5 * t.getFji() * Sj;
+		secondComponent[j-1] *= -0.5 * t.getFji() * SModule;
 	}
 
 	double J = t.getJ();
@@ -118,7 +94,6 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 	dU += component[0] + component[1] + component[2] + secondComponent[0] + secondComponent[1] + secondComponent[2]
 		  + thirdComponent + fourthComponent;
 	dU /= (Mkl * J);
-
 
 	return dU;
 }

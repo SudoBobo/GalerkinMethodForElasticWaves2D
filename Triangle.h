@@ -136,6 +136,7 @@ public:
   double getX(int i) const;
   double getY(int i) const;
 
+  double getSModule(Bound bound) const;
   matrix<double> getSpeedMatrix () const;
 
 private:

@@ -1,5 +1,8 @@
 #include "SystemSolver.h"
 
+using std::cout;
+using std::endl;
+
 SystemSolver::SystemSolver()
 {
 
@@ -17,12 +20,19 @@ void SystemSolver::setTimeStep(double timeStep)
 
 void SystemSolver::solveOneTriangle(Triangle & origTriangle, Triangle & newTriangle)
 {
-	static matrix<double> U;
+	matrix<double> U;
 	//не по ссылке ли передаётся?
 //	U = origTriangle.getU();
 	// Euler method
 	 // this->getTimeStep() * this->systemMaker.dU();
 	U = origTriangle.getU();
-	U += this->timeStep * this->systemMaker->dU(origTriangle);
+	matrix <double> dU = this->systemMaker->dU(origTriangle);
+	matrix <double> dUt = dU * this->timeStep;
+
+//	cout << U << endl;
+//	cout << dU << endl;
+//	cout << dUt << endl;
+	U += dUt;
+//	U += this->timeStep * this->systemMaker->dU(origTriangle);
 	newTriangle.setU(U);
 }

@@ -29,9 +29,9 @@ void ProblemSolver::solve (double realFullTime, double timeStep,
 	for (int t = 0; t < timeSteps; t++)
 	{
 		// using currentState data fills nexState
+		this->writeOneStep(currentState, t);
 		this->solveOneStep(currentState, nextState);
 		swap(currentState, nextState);
-		this->writeOneStep(currentState, t);
 	}
 }
 
@@ -56,10 +56,8 @@ void ProblemSolver::writeOneStep(shared_ptr <TriangleMesh> triangleMesh,
 
 	FileWriter fileWriter(source, "part0_","file",
 							  "/home/bobo/aData/", 6, gridSize);
-//	static bool isFirstCall = false;
-//	if (!isFirstCall)
-//		fileWriter.clean();
-//	isFirstCall = true;
+	if (numberOfStep == 0)
+		fileWriter.clean();
 	fileWriter.write(numberOfStep);
 }
 
