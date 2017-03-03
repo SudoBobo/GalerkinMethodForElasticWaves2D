@@ -79,18 +79,18 @@ matrix<double> SystemMaker::dU(Triangle &triangle) const
 	for (int j = 1; j <= 3; j++)
 	{
 		// проверь эту секцию с дебагом
-		T = t.getT(j);
+		//T = t.getT(j);
+        Bound currentBound = t.getBound(j);
+        T = t.getT(currentBound);
 		A = t.getA();
-		AbsoluteA = t.getAbsoluteA();
-
-		U = t.getU();
+		AbsoluteA = t.getAbsoluteA(currentBound);
+        matrix <double> mU = currentBound.boundaryTriangle->getU();
 
 		// hardly unfinished
 		matrix<double>first = prod(T, A - AbsoluteA);
 		// не T, а обратная к T
 		matrix<double>invertibleT = makeInvertible(T);
-		U = t.getFirstBoundaryTriangle()->getU();
-		matrix<double> second = prod (invertibleT, U);
+		matrix<double> second = prod (invertibleT, mU);
 
 		secondComponent[j-1] = prod(first,second);
 		secondComponent[j-1] *= -0.5 * t.getFji() * Sj;

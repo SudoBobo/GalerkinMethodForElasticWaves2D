@@ -1,6 +1,7 @@
 #include "Triangle.h"
 #include <iostream>
 #include <vector>
+#include "MyMath.h"
 
 using std::vector;
 
@@ -102,13 +103,54 @@ matrix<double> Triangle::getStarA() const{
     return A;
 }
 
-matrix<double> Triangle::getAbsoluteA() const{
-    return A;
+matrix<double> Triangle::getAbsoluteA(Bound bound) const{
+    matrix <double> AbsoluteA;
+    matrix <double> first = prod(this->getR(bound), this->getSpeedMatrix());
+    matrix <double> invertableR = makeInvertible(this->getR(bound));
+    AbsoluteA = prod(first, invertableR);
+    return AbsoluteA;
 }
 
-matrix<double> Triangle::getAbsoluteB() const{
-    return B;
-}
+matrix<double> Triangle::getR (Bound bound)const{
+    matrix<double> R(5,5);
+    double nX = bound.nx;
+    double nY = bound.ny;
+
+
+    R(0, 0) = nX * nX;
+    R(0, 1) = nY * nY;
+    R(0, 2) = -2 * nX * nY;
+    R(0, 3) = 0;
+    R(0, 4) = 0;
+
+    R(1, 0) = nY * nY;
+    R(1, 1) = nX * nX;
+    R(1, 2) = 2 * nX * nY;
+    R(1, 3) = 0;
+    R(1, 4) = 0;
+
+    R(2, 0) = nX * nX;
+    R(2, 1) = -nX * nY;
+    R(2, 2) = nX * nX - nY * nY;
+    R(2, 3) = 0;
+    R(2, 4) = 0;
+
+    R(3, 0) = 0;
+    R(3, 1) = 0;
+    R(3, 2) = 0;
+    R(3, 3) = nX;
+    R(3, 4) = -nY;
+
+    R(4, 0) = 0;
+    R(4, 1) = 0;
+    R(4, 2) = 0;
+    R(4, 3) = nY;
+    R(4, 4) = nX;
+
+
+};
+
+
 
 matrix<double> Triangle::getStarB() const{
     return B;
@@ -291,4 +333,44 @@ matrix<double> Triangle::getT(int j) const {
         isCalculated = true;
         return T[j - 1];
     }
+}
+
+matrix<double> Triangle::getT(Bound bound) const {
+
+      matrix<double> T(5,5);
+
+      double nX = bound.nx;
+      double nY = bound.ny;
+
+      T(0, 0) = nX * nX;
+      T(0, 1) = nY * nY;
+      T(0, 2) = -2 * nX * nY;
+      T(0, 3) = 0;
+      T(0, 4) = 0;
+
+      T(1, 0) = nY * nY;
+      T(1, 1) = nX * nX;
+      T(1, 2) = 2 * nX * nY;
+      T(1, 3) = 0;
+      T(1, 4) = 0;
+
+      T(2, 0) = nX * nX;
+      T(2, 1) = -nX * nY;
+      T(2, 2) = nX * nX - nY * nY;
+      T(2, 3) = 0;
+      T(2, 4) = 0;
+
+      T(3, 0) = 0;
+      T(3, 1) = 0;
+      T(3, 2) = 0;
+      T(3, 3) = nX;
+      T(3, 4) = -nY;
+
+      T(4, 0) = 0;
+      T(4, 1) = 0;
+      T(4, 2) = 0;
+      T(4, 3) = nY;
+      T(4, 4) = nX;
+
+      return T;
 }

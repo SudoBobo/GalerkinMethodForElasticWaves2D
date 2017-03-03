@@ -82,18 +82,23 @@ public:
 	int getRectangleM () const;
 
 	matrix <double> getA() const;
-	matrix <double> getAbsoluteA() const;
+	matrix <double> getAbsoluteA(Bound bound) const;
 	matrix <double> getStarA() const;
-	matrix <double> getStarB() const;
-	matrix <double> getAbsoluteB() const;
 
 	matrix <double> getB() const;
+  	matrix <double> getStarB() const;
 
-	Triangle * getFirstBoundaryTriangle() const;
+
+  	matrix<double> getR (Bound bound)const;
+
+
+  	Triangle * getFirstBoundaryTriangle() const;
 	Triangle * getSecondBoundaryTriangle() const;
 	Triangle * getThirdBoundaryTriangle() const;
 
 	matrix <double> getT(int j) const;
+  	matrix<double> getT(Bound bound) const;
+
 	std::pair <double, double> getCentreCoordinates() const;
 
 	double getJ() const;
